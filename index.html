@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Human Relation Finder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>Human Relation Detection (3 Generations)</h2>
+
+<form method="post" action="/relation">
+
+<h3>Candidate A</h3>
+Gender:
+<select name="a_gender">
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+</select><br>
+
+Father: <input name="a_father" required>
+Mother: <input name="a_mother" required><br>
+PGF: <input name="a_pgf">
+PGM: <input name="a_pgm"><br>
+MGF: <input name="a_mgf">
+MGM: <input name="a_mgm"><br>
+
+<h3>Candidate B</h3>
+Gender:
+<select name="b_gender">
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+</select><br>
+
+Father: <input name="b_father" required>
+Mother: <input name="b_mother" required><br>
+PGF: <input name="b_pgf">
+PGM: <input name="b_pgm"><br>
+MGF: <input name="b_mgf">
+MGM: <input name="b_mgm"><br><br>
+
+<button type="submit">Find Relation</button>
+</form>
+
+{% if result %}
+<h2>Relation: {{ result }}</h2>
+{% endif %}
+
+</body>
+</html>
