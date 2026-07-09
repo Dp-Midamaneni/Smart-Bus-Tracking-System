@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bus Tracking System</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🚌 Smart Bus Tracking System</h1>
+    </header>
+
+    <div class="container">
+
+        <h2>Select Route</h2>
+
+        <select id="routeSelect">
+            <option value="">Loading Routes...</option>
+        </select>
+
+        <button onclick="loadBuses()">Get Buses</button>
+
+        <hr>
+
+        <h2>Available Buses</h2>
+
+        <div id="busList"></div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
