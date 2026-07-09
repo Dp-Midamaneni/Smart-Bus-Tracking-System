@@ -2,16 +2,21 @@ import { useState } from "react";
 
 function FeedbackForm() {
 
-  const [rating, setRating] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
 
   const sendFeedback = async () => {
 
-    const response = await fetch("http://localhost:5000/feedback", {
+    const response = await 
+    fetch("http://localhost:5001/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ rating })
+      body: JSON.stringify({
+        name,
+        message
+      })
     });
 
     const data = await response.text();
@@ -20,16 +25,26 @@ function FeedbackForm() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
 
-      <h2>Bus Feedback Form</h2>
+      <h1>Feedback Form</h1>
 
       <input
-        type="number"
-        placeholder="Enter rating"
-        value={rating}
-        onChange={(e) => setRating(e.target.value)}
+        type="text"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
+
+      <br /><br />
+
+      <textarea
+        placeholder="Enter Feedback"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+
+      <br /><br />
 
       <button onClick={sendFeedback}>
         Submit
