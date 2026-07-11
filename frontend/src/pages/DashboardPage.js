@@ -1,24 +1,60 @@
 import Dashboard from "../components/Dashboard";
-import BusMap from "../components/BusMap";
 import Notifications from "../components/Notifications";
+import FeedbackForm from "../components/FeedbackForm";
 
 function DashboardPage() {
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container-fluid py-4">
+
+      {/* Welcome Section */}
+      <div className="mb-4">
+        <h1
+          style={{
+            fontWeight: "700",
+            color: "#0F172A",
+          }}
+        >
+          Welcome back, Admin! 👋
+        </h1>
+
+        <p
+          style={{
+            color: "#64748B",
+            fontSize: "18px",
+          }}
+        >
+          Here's what's happening with your system today.
+        </p>
+      </div>
+
+      {/* Dashboard Cards */}
       <Dashboard />
 
-      <div
+      {/* Notifications + Feedback */}
+      <div className="row mt-4 gx-4">
+
+  <div className="col-lg-6 mb-4">
+    <Notifications />
+  </div>
+
+  <div className="col-lg-6 mb-4">
+    <FeedbackForm />
+  </div>
+
+</div>
+      {/* Footer */}
+      <footer
         style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: "20px",
-          marginTop: "20px",
+          marginTop: "30px",
+          textAlign: "center",
+          color: "#64748B",
+          padding: "20px",
+          fontSize: "14px",
         }}
       >
-        <BusMap />
+        © 2026 Smart Bus Tracking System | Person C Module
+      </footer>
 
-        <Notifications />
-      </div>
     </div>
   );
 }

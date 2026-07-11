@@ -1,77 +1,155 @@
 import { useEffect, useState } from "react";
-import socket from "../socket";
+import {
+  FaBus,
+  FaCommentDots,
+  FaBell,
+  FaWifi,
+} from "react-icons/fa";
 
 function Dashboard() {
-  const [buses, setBuses] = useState([]);
-
-  const fetchBuses = () => {
-    fetch("http://localhost:5001/buses")
-      .then((res) => res.json())
-      .then((data) => setBuses(data))
-      .catch((err) => console.log(err));
-  };
+  const [feedbackCount, setFeedbackCount] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [lastSync, setLastSync] = useState("");
 
   useEffect(() => {
-    fetchBuses();
+    fetchFeedback();
+    fetchNotifications();
 
-    socket.on("busUpdated", fetchBuses);
+    const online = () => setIsOnline(true);
+    const offline = () => setIsOnline(false);
+
+    window.addEventListener("online", online);
+    window.addEventListener("offline", offline);
 
     return () => {
-      socket.off("busUpdated", fetchBuses);
+      window.removeEventListener("online", online);
+      window.removeEventListener("offline", offline);
     };
   }, []);
 
-  const running = buses.filter((bus) => bus.status === "Running").length;
-  const stopped = buses.filter((bus) => bus.status === "Stopped").length;
-  const delayed = buses.filter((bus) => bus.status === "Delayed").length;
+  const fetchFeedback = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/feedback");
+      const data = await res.json();
+
+      setFeedbackCount(data.length);
+      setLastSync(new Date().toLocaleString());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/alerts");
+      const data = await res.json();
+
+      setNotificationCount(data.length);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const cards = [
+    {
+      title: "Total Buses",
+      value: "12",
+      icon: <FaBus />,
+      color: "#2563EB",
+      bg: "#EFF6FF",
+    },
+    {
+      title: "Feedback",
+      value: feedbackCount,
+      icon: <FaCommentDots />,
+      color: "#10B981",
+      bg: "#ECFDF5",
+    },
+    {
+      title: "Notifications",
+      value: notificationCount,
+      icon: <FaBell />,
+      color: "#F59E0B",
+      bg: "#FFFBEB",
+    },
+    {
+      title: "Status",
+      value: isOnline ? "Online" : "Offline",
+      icon: <FaWifi />,
+      color: isOnline ? "#22C55E" : "#EF4444",
+      bg: "#F8FAFC",
+    },
+  ];
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4 text-center">📊 Dashboard</h2>
+    <div className="row g-4">
 
-      <div className="row">
+      {cards.map((card, index) => (
+        <div
+          className="col-xl-3 col-md-6"
+          key={index}
+        >
+          <div
+            className="card border-0 shadow-sm"
+            style={{
+              borderRadius: "18px",
+            }}
+          >
+            <div className="card-body">
 
-        <div className="col-md-3 mb-3">
-          <div className="card bg-primary text-white shadow">
-            <div className="card-body text-center">
-              <h4>🚌</h4>
-              <h5>Total Buses</h5>
-              <h2>{buses.length}</h2>
+              <div
+                style={{
+                  width: "55px",
+                  height: "55px",
+                  borderRadius: "15px",
+                  background: card.bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: card.color,
+                  fontSize: "24px",
+                  marginBottom: "18px",
+                }}
+              >
+                {card.icon}
+              </div>
+
+              <h6
+                style={{
+                  color: "#64748B",
+                }}
+              >
+                {card.title}
+              </h6>
+
+              <h2
+                style={{
+                  fontWeight: "700",
+                  color: "#0F172A",
+                }}
+              >
+                {card.value}
+              </h2>
+
             </div>
           </div>
         </div>
+      ))}
 
-        <div className="col-md-3 mb-3">
-          <div className="card bg-success text-white shadow">
-            <div className="card-body text-center">
-              <h4>🟢</h4>
-              <h5>Running</h5>
-              <h2>{running}</h2>
-            </div>
+      <div className="col-12 mt-3">
+        <div
+          className="card border-0 shadow-sm"
+          style={{
+            borderRadius: "18px",
+          }}
+        >
+          <div className="card-body">
+            <strong>Last Sync :</strong> {lastSync || "--"}
           </div>
         </div>
-
-        <div className="col-md-3 mb-3">
-          <div className="card bg-warning text-dark shadow">
-            <div className="card-body text-center">
-              <h4>🟠</h4>
-              <h5>Delayed</h5>
-              <h2>{delayed}</h2>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-3 mb-3">
-          <div className="card bg-danger text-white shadow">
-            <div className="card-body text-center">
-              <h4>🔴</h4>
-              <h5>Stopped</h5>
-              <h2>{stopped}</h2>
-            </div>
-          </div>
-        </div>
-
       </div>
+
     </div>
   );
 }

@@ -1,32 +1,83 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import socket from "../socket";
 import { Link } from "react-router-dom";
 
 function Notifications() {
   const [alerts, setAlerts] = useState([]);
+  const [lastSync, setLastSync] = useState("");
+  const notificationSent = useRef(false);
 
   const fetchAlerts = () => {
     fetch("http://localhost:5001/alerts")
       .then((response) => response.json())
       .then((data) => {
-        // Show latest notifications first
-        setAlerts(data.reverse());
+        const latestAlerts = [...data].reverse();
+
+        setAlerts(latestAlerts);
+
+        const time = new Date().toLocaleString();
+        setLastSync(time);
+
+        localStorage.setItem(
+          "alerts",
+          JSON.stringify(latestAlerts)
+        );
+
+        localStorage.setItem("lastSync", time);
       })
-      .catch((error) => console.log(error));
+      .catch(() => {
+        const savedAlerts = localStorage.getItem("alerts");
+        const savedTime = localStorage.getItem("lastSync");
+
+        if (savedAlerts) {
+          setAlerts(JSON.parse(savedAlerts));
+        }
+
+        if (savedTime) {
+          setLastSync(savedTime);
+        }
+      });
   };
 
   useEffect(() => {
     fetchAlerts();
 
+    // Ask browser notification permission
+    if ("Notification" in window) {
+      Notification.requestPermission();
+    }
+
+    // Demo 5-minute notification
+    const timer = setTimeout(() => {
+      if (
+        Notification.permission === "granted" &&
+        !notificationSent.current
+      ) {
+        new Notification("🚌 Smart Bus Alert", {
+          body: "Your bus will arrive in 5 minutes. Please reach the bus stop.",
+          icon: "/bus.png",
+        });
+
+        notificationSent.current = true;
+      }
+    }, 10000);
+
     socket.on("alertAdded", fetchAlerts);
 
     return () => {
       socket.off("alertAdded", fetchAlerts);
+      clearTimeout(timer);
     };
   }, []);
 
   return (
-    <div className="card shadow" style={{ height: "100%" }}>
+   <div
+  className="card border-0 shadow h-100"
+  style={{
+    borderRadius: "22px",
+    minHeight: "650px",
+  }}
+>
       <div className="card-header bg-primary text-white d-flex justify-content-between">
         <h5 className="mb-0">🔔 Recent Notifications</h5>
 
@@ -45,10 +96,18 @@ function Notifications() {
       <div
         className="card-body"
         style={{
-          maxHeight: "500px",
+          maxHeight: "430px",
           overflowY: "auto",
         }}
       >
+        <p
+          className="text-muted"
+          style={{ fontSize: "14px" }}
+        >
+          <strong>Last Sync:</strong>{" "}
+          {lastSync || "No data available"}
+        </p>
+
         {alerts.length === 0 ? (
           <div className="alert alert-info">
             No notifications available.
