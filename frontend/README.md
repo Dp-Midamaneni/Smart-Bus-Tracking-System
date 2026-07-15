@@ -1,70 +1,197 @@
-# Getting Started with Create React App
+# Smart Bus Tracking System - Person C
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This branch contains the Person C implementation of the Smart Bus Tracking System.
 
-In the project directory, you can run:
+The objective of this module is to provide an administrator dashboard that displays system information, manages passenger feedback, and shows real-time notifications through a user-friendly web interface.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Person C Responsibilities
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Frontend
 
-### `npm test`
+- Designed the Admin Dashboard
+- Displayed system statistics
+- Developed Passenger Feedback Form
+- Developed Notifications Panel
+- Displayed System Status
+- Displayed Date & Time
+- Added Last Synchronization information
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Backend
 
-### `npm run build`
+Implemented REST APIs:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- POST /feedback
+- GET /alerts
+- POST /alerts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Connected frontend components with the backend and MongoDB database.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+# Dashboard Features
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Implemented:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Total Buses Counter
+- Feedback Counter
+- Notifications Counter
+- Online Status Indicator
+- Recent Notifications Section
+- Passenger Feedback Form
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Project Structure
 
-## Learn More
+```
+person_c/
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+├── backend/
+│   ├── routes/
+│   │   ├── feedbackRoutes.js
+│   │   └── alertRoutes.js
+│   │
+│   ├── models/
+│   │   ├── Feedback.js
+│   │   └── Alert.js
+│   │
+│   └── server.js
+│
+├── frontend/
+│   ├── src/
+│   │   ├── Dashboard.js
+│   │   ├── FeedbackForm.js
+│   │   ├── Notifications.js
+│   │   └── Dashboard.css
+│   │
+│   └── App.js
+│
+└── README.md
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+# Technologies Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- React.js
+- Node.js
+- Express.js
+- MongoDB
+- HTML
+- CSS
+- JavaScript
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Module Workflow
 
-### Making a Progressive Web App
+1. Administrator opens the dashboard.
+2. Dashboard displays system statistics.
+3. Recent notifications are fetched from the backend.
+4. Passenger feedback is submitted through the feedback form.
+5. Feedback is stored in MongoDB.
+6. Notifications and dashboard information are updated dynamically.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+# API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Feedback API
 
-### Deployment
+### POST /feedback
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Input**
 
-### `npm run build` fails to minify
+```json
+{
+  "name": "Divya",
+  "busNumber": "101",
+  "rating": 5,
+  "feedback": "Bus arrived on time."
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Output**
+
+```json
+{
+  "message": "Feedback submitted successfully."
+}
+```
+
+---
+
+## Notifications API
+
+### GET /alerts
+
+Returns all recent notifications.
+
+### POST /alerts
+
+Adds a new notification.
+
+---
+
+# How to Run
+
+## Install Dependencies
+
+```bash
+cd backend
+npm install
+
+cd ../frontend
+npm install
+```
+
+## Start Backend
+
+```bash
+cd backend
+npm start
+```
+
+## Start Frontend
+
+```bash
+cd frontend
+npm start
+```
+
+Open:
+
+```
+http://localhost:3000
+```
+
+in your browser.
+
+---
+
+# Future Improvements
+
+- Real-time notifications using Socket.IO
+- Push notification support
+- Dashboard analytics and charts
+- Feedback filtering and search
+- Export feedback reports
+
+---
+
+# Team Project
+
+**Smart Bus Tracking System**
+
+**Role:** Person C
+
+**Features:**
+- Admin Dashboard
+- Passenger Feedback Module
+- Notifications Module
+
+Developed as part of the Smart Bus Tracking System team project.
