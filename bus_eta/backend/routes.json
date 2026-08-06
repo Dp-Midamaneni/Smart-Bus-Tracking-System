@@ -1,0 +1,26 @@
+{
+  "routes": [
+    {
+      "route_id": "R1",
+      "source": "Ameerpet",
+      "destination": "Kukatpally",
+      "stops": [
+        "Ameerpet",
+        "SR Nagar",
+        "Balanagar",
+        "Kukatpally"
+      ]
+    },
+    {
+      "route_id": "R2",
+      "source": "Secunderabad",
+      "destination": "MGBS",
+      "stops": [
+        "Secunderabad",
+        "Paradise",
+        "Tank Bund",
+        "MGBS"
+      ]
+    }
+  ]
+}
